@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Documents - Enterprise Q&A</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📤 Upload Documents</h1>
+            <p class="subtitle">Add new documents to the knowledge base</p>
+            <a href="/" class="back-link">← Back to Q&A</a>
+        </header>
+
+        <main>
+            <div class="upload-container">
+                <div class="upload-area" id="upload-area" onclick="document.getElementById('file-input').click()">
+                    <div class="upload-icon">📄</div>
+                    <h2>Click to Upload Files</h2>
+                    <p>or drag and drop here</p>
+                    <input type="file" id="file-input" accept=".pdf,.txt" multiple style="display: none;">
+                    <p class="file-info">Supported: PDF, TXT (Max 10MB each)</p>
+                </div>
+
+                <div id="file-list" class="file-list"></div>
+
+                <div id="upload-status" class="upload-status" style="display: none;"></div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const uploadArea = document.getElementById('upload-area');
+        const fileInput = document.getElementById('file-input');
+        const fileList = document.getElementById('file-list');
+        const uploadStatus = document.getElementById('upload-status');
+
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        // Highlight drop area
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, () => {
+                uploadArea.classList.add('drag-over');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, () => {
+                uploadArea.classList.remove('drag-over');
+            }, false);
+        });
+
+        // Handle dropped files
+        uploadArea.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }, false);
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        function handleFiles(files) {
+            fileList.innerHTML = '';
+
+            Array.from(files).forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <span class="file-name">📄 ${file.name}</span>
+                    <span class="file-size">${(file.size / 1024).toFixed(1)} KB</span>
+                    <button onclick="uploadFile(${index})" class="upload-btn">Upload</button>
+                    <span class="file-status" id="status-${index}">⏳ Ready</span>
+                `;
+                fileList.appendChild(fileItem);
+            });
+        }
+
+        async function uploadFile(index) {
+            const file = fileInput.files[index];
+            const statusEl = document.getElementById(`status-${index}`);
+
+            statusEl.textContent = '⏳ Uploading...';
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    statusEl.textContent = '✅ Uploaded';
+                    statusEl.style.color = 'green';
+                    showMessage(`Successfully uploaded: ${file.name}`, 'success');
+                } else {
+                    statusEl.textContent = '❌ Failed';
+                    statusEl.style.color = 'red';
+                    showMessage(`Error: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                statusEl.textContent = '❌ Error';
+                statusEl.style.color = 'red';
+                showMessage(`Upload failed: ${error.message}`, 'error');
+            }
+        }
+
+        function showMessage(message, type) {
+            uploadStatus.style.display = 'block';
+            uploadStatus.className = `upload-status ${type}`;
+            uploadStatus.textContent = message;
+
+            setTimeout(() => {
+                uploadStatus.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

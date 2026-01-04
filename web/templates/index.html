@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Document Q&A System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Enterprise Document Q&A</h1>
+            <p class="subtitle">Ask questions about your company documents</p>
+            <div class="stats">
+                <span id="doc-count">Documents indexed: {{ document_count }}</span>
+            </div>
+        </header>
+
+        <main>
+            <div class="chat-container">
+                <div id="chat-messages" class="chat-messages">
+                    <div class="welcome-message">
+                        <h2>👋 Welcome!</h2>
+                        <p>Ask me anything about the company documents. I'll provide accurate answers based only on the uploaded content.</p>
+                        <div class="example-questions">
+                            <p><strong>Try asking:</strong></p>
+                            <ul>
+                                <li>"How many days of annual leave do employees get?"</li>
+                                <li>"What is the work from home policy?"</li>
+                                <li>"How do I request sick leave?"</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-container">
+                    <textarea
+                        id="question-input"
+                        placeholder="Type your question here..."
+                        rows="3"
+                    ></textarea>
+                    <button id="ask-button" onclick="askQuestion()">
+                        <span id="button-text">Ask Question</span>
+                        <span id="button-loading" style="display: none;">⏳ Processing...</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="info-card">
+                    <h3>🔒 Safety Features</h3>
+                    <ul>
+                        <li>✅ Document-grounded answers only</li>
+                        <li>✅ No hallucinations</li>
+                        <li>✅ Content filtering enabled</li>
+                        <li>✅ All queries logged</li>
+                    </ul>
+                </div>
+
+                <div class="info-card">
+                    <h3>📤 Upload Documents</h3>
+                    <p>Need to add more documents?</p>
+                    <a href="/upload" class="button-link">Go to Upload Page</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
