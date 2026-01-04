@@ -1,4 +1,4 @@
-Document Q&A System
+# 📚 Document Q&A System
 
 Azure AI Search + OpenAI
 
@@ -6,7 +6,7 @@ An enterprise-grade Document Question & Answer (Q&A) system that enables users t
 
 This project is designed to avoid hallucinations by enforcing strict prompt rules and limiting answers to retrieved document context only.
 
-📌 Overview
+## 📌 Overview
 
 The system combines:
 
@@ -26,7 +26,7 @@ Manuals and SOPs
 
 Enterprise documentation systems
 
-🚀 Features
+## 🚀 Features
 
 🔍 Document search using Azure AI Search
 
@@ -40,15 +40,18 @@ Enterprise documentation systems
 
 📄 Easily extendable to PDFs, manuals, and policy documents
 
-📁 Project Structure
+## 📁 Project Structure
+
+```
 umar-mukthar-ahmed-document-qa-project/
 ├── main.py                 # Main Q&A application
 ├── upload_documents.py     # Uploads documents to Azure AI Search
 ├── documents/
 │   └── sample_policy.txt  # Sample company policy document
 └── README.md
+```
 
-⚙️ Prerequisites
+## ⚙️ Prerequisites
 
 Make sure you have the following:
 
@@ -60,34 +63,47 @@ OpenAI API key
 
 Active internet connection
 
-🔐 Environment Variables
+## 🔐 Environment Variables
 
 Create a .env file in the project root directory and add the following:
 
+```env
 OPENAI_API_KEY=your_openai_api_key
 
 AZURE_SEARCH_ENDPOINT=https://your-search-service.search.windows.net
 AZURE_SEARCH_API_KEY=your_azure_search_api_key
 AZURE_SEARCH_INDEX_NAME=documents-index
+```
 
-📦 Installation
-1️⃣ Clone the Repository
+## 📦 Installation
+
+### 1️⃣ Clone the Repository
+
+```bash
 git clone https://github.com/your-username/umar-mukthar-ahmed-document-qa-project.git
 cd umar-mukthar-ahmed-document-qa-project
+```
 
-2️⃣ Create a Virtual Environment (Recommended)
+### 2️⃣ Create a Virtual Environment (Recommended)
+
+```bash
 python -m venv venv
 source venv/bin/activate     # Windows: venv\Scripts\activate
+```
 
-3️⃣ Install Dependencies
+### 3️⃣ Install Dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
-📤 Upload Documents to Azure AI Search
+## 📤 Upload Documents to Azure AI Search
 
 Before running the Q&A system, upload documents to Azure AI Search:
 
+```bash
 python upload_documents.py
-
+```
 
 ✔ This script will:
 
@@ -97,32 +113,33 @@ Upload sample_policy.txt to the index
 
 You can add more documents inside the documents/ folder.
 
-▶️ Run the Application
+## ▶️ Run the Application
 
 Start the Q&A system using:
 
+```bash
 python main.py
-
+```
 
 You will be presented with three options:
 
-Run test questions – Demonstrates correct answers and “not found” scenarios
+Run test questions – Demonstrates correct answers and "not found" scenarios
 
 Interactive mode – Ask your own questions in real time
 
 Exit – Close the application
 
-🧠 How It Prevents Hallucinations
+## 🧠 How It Prevents Hallucinations
 
 Answers are generated only from retrieved search results
 
 If no relevant content is found, the system responds with:
 
-“The answer is not available in the provided documents.”
+"The answer is not available in the provided documents."
 
 The AI is explicitly instructed not to use prior knowledge
 
-📈 Future Enhancements
+## 📈 Future Enhancements
 
 PDF and Word document ingestion
 
@@ -134,6 +151,6 @@ Document chunking and embeddings optimization
 
 Logging and analytics
 
-📜 License
+## 📜 License
 
 This project is intended for educational and enterprise demonstration purposes.
